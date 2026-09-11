@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculadora de términos</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <h1>Calculadora de términos</h1>
+  <p class="muted">Calcula plazos judiciales en Colombia teniendo en cuenta suspensiones, fines de semana y festivos.</p>
+
+  <div class="calculadora-layout">
+    <div class="formularios">
+      <fieldset>
+        <legend>Datos</legend>
+
+        <div class="row">
+          <div>
+            <label for="fecha_notif">📆 Fecha de notificación</label>
+            <input id="fecha_notif" type="date" />
+          </div>
+          <div>
+            <label for="tipo_notif">📢 Medio</label>
+            <select id="tipo_notif">
+              <option value=""></option>
+              <option>Estados</option>
+              <option>Audiencia</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Obligación condicional -->
+        <div class="row">
+          <div>
+            <label for="modo_cond">⏳ Modo plazo condicional</label>
+            <select id="modo_cond">
+              <option value="dias" selected>Días</option>
+              <option value="fijo">Fecha fija</option>
+            </select>
+          </div>
+
+          <div id="cond_dias">
+            <label for="dias_cond">📅 Plazo ob. condicional (días hábiles)</label>
+            <input id="dias_cond" type="number" value="0" min="0" max="90" />
+          </div>
+
+          <div id="cond_fijo" style="display:none">
+            <label for="fecha_cond">📆 Fecha límite ob. condicional</label>
+            <input id="fecha_cond" type="date" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="fecha_cumpl_cond">✅ Fecha real cumplimiento ob. condicional</label>
+            <input id="fecha_cumpl_cond" type="date" />
+            <div style="margin-top:0.4em">
+              <label>
+                <input id="acepta_ext_cond" type="checkbox" />
+                Cumplimiento extemporáneo aceptado
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cumplimiento -->
+        <div class="row">
+          <div>
+            <label for="modo_cumpl">🧭 Modo plazo cumplir</label>
+            <select id="modo_cumpl">
+              <option value="dias" selected>Días</option>
+              <option value="meses">Meses</option>
+              <option value="fijo">Fecha fija</option>
+            </select>
+          </div>
+
+          <div id="box_dias">
+            <label for="dias_cumpl">📅 Plazo para cumplir (Ddo)</label>
+            <input id="dias_cumpl" type="number" value="15" min="0" max="90" />
+          </div>
+
+          <div id="box_meses" style="display:none">
+            <label for="meses_cumpl">📅 Plazo (meses)</label>
+            <input id="meses_cumpl" type="number" value="1" min="0" max="36" />
+          </div>
+
+          <div id="box_fijo" style="display:none">
+            <label for="fecha_fija">📅 Fecha límite fija</label>
+            <input id="fecha_fija" type="date" />
+          </div>
+        </div>
+
+        <!-- Informe -->
+        <div class="row">
+          <div>
+            <label for="dias_informe">📅 Plazo para informar (Ddte)</label>
+            <input id="dias_informe" type="number" value="30" min="0" max="90" />
+          </div>
+
+          <div>
+            <label for="fecha_informe">📬 Fecha noticia de incumplimiento</label>
+            <input id="fecha_informe" type="date" />
+            <div>
+              <label>
+                <input id="sin_noticia" type="checkbox"/>
+                Sin noticia
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="btn_calc" type="button">Calcular</button>
+          <button id="btn_detalle" type="button" class="info">Detalle</button>
+          <button id="btn_reset" type="button" class="warn">Resetear</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>🧮 Calculadora sencilla</legend>
+
+        <div class="row">
+          <div>
+            <label for="simple_fecha">📆 Fecha inicial</label>
+            <input id="simple_fecha" type="date">
+          </div>
+
+          <div>
+            <label for="simple_dias">📅 Días hábiles</label>
+            <input id="simple_dias" type="number" min="0" value="1">
+          </div>
+        </div>
+
+        <button id="btn_simple_calc" type="button">Calcular</button>
+
+        <div class="note simple-resultado">
+          <strong>Fecha final:</strong>
+          <div id="simple_resultado" class="small"></div>
+        </div>
+      </fieldset>
+    </div>
+
+    <section class="panel-resultados" aria-live="polite">
+      <div id="aviso" class="note" style="display:none"></div>
+
+      <div id="resultado" style="display:none">
+        <h2>📌 Resultados</h2>
+        <div id="res_text" class="resultado-lista"></div>
+      </div>
+
+      <div id="detalle" style="display:none">
+        <h3>Detalle</h3>
+        <pre id="det_ejecutoria"></pre>
+        <pre id="det_cond"></pre>
+        <pre id="det_cumpl"></pre>
+        <pre id="det_limite"></pre>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
